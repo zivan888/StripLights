@@ -62,12 +62,14 @@ class StripLightsNode: UIView {
             let startX = firstNodeLeftWidthPadding()
             let startY = firstNodeTopHeightPadding()
             let startPoint = CGPointMake(startX, startY)
+            
             path.move(to: startPoint)
-            path.addLine(to: CGPointMake(startX, startY + getFirstLineVerticalGauge()))
             
-            let rect = CGRectMake(startX, startY, lineWidth, getFirstLineVerticalGauge())
-            path.addRoundedRect(in: rect, cornerWidth: 3.0, cornerHeight: 3.0)
+            let topRect = CGRectMake(startX, startY, lineWidth, getFirstLineVerticalGauge())
+            let cornerRadii = lineWidth/2.0
+            let topPath = UIBezierPath.init(roundedRect: topRect, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadii, height: cornerRadii))
             
+            path.addPath(topPath.cgPath)
             context.addPath(path)
             
             break
