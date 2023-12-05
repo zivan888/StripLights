@@ -68,9 +68,7 @@ class StripLightsNode: UIView {
             let topRect = CGRectMake(startX, startY, lineWidth, getFirstLineVerticalGauge())
             let cornerRadii = lineWidth/2.0
             let topPath = UIBezierPath.init(roundedRect: topRect, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadii, height: cornerRadii))
-            
             path.addPath(topPath.cgPath)
-            context.addPath(path)
             
             break
             
@@ -91,6 +89,8 @@ class StripLightsNode: UIView {
             break
         }
         
+        context.addPath(path)
+
         context.setStrokeColor(color.cgColor)
         context.setLineWidth(lineWidth)
         context.setFillColor(color.cgColor)
