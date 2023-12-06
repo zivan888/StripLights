@@ -14,7 +14,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         let rect = CGRectMake(100, 100, 100, 100)
-        let nodeView = StripLightsNode(frame: rect, color: .red, bgColor: .blue, direction: .RIGHT_TO_BOTTOM, span: .LAST, style: .ONLY_LINE)
+        let nodeView = StripLightsNode(frame: rect, color: .red, bgColor: .blue, direction: .LEFT_TO_BOTTOM, span: .LAST, style: .ONLY_LINE)
 //        let nodeView = StripLightsNode(frame: rect, color: .red, bgColor: .green, direction: .RIGHT_TO_BOTTOM, span: .FIRST, style: .ONLY_LINE)
 
         view.addSubview(nodeView)

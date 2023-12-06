@@ -68,8 +68,8 @@ class StripLightsNode: UIView {
             let startX = firstNodeLeftWidthPadding()
             let startY = firstNodeTopHeightPadding()
             
-            let lineLength = getFirstLineVerticalGauge()
-            let topRect = CGRectMake(startX, startY, 0.01, lineLength-1)
+            let lineLength = firstNodeTopHeightPadding()
+            let topRect = CGRectMake(startX, startY, 0.01, lineLength)
             let cornerRadii = lineWidth/2.0
             let topPath = UIBezierPath.init(roundedRect: topRect, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadii, height: 1))
             path.append(topPath)
@@ -97,6 +97,23 @@ class StripLightsNode: UIView {
             break
             
         case .LEFT_TO_BOTTOM:
+            let shortLineWH = getFirstLineVerticalGauge()
+            let startX = 0.0
+            let radius = (nodeWidth - shortLineWH - lineWidth) * 0.5
+            
+            let hPath = UIBezierPath()
+            hPath.move(to: CGPoint(x: startX, y: nodeHeight-radius-shortLineWH))
+            hPath.addLine(to: CGPoint(x: startX + shortLineWH, y: nodeHeight-radius-shortLineWH))
+            path.append(hPath)
+                        
+            let arcCenter = CGPoint(x: startX + shortLineWH, y: nodeHeight - shortLineWH)
+            let cPath = UIBezierPath.init(arcCenter: arcCenter, radius: radius, startAngle: Double.pi*1.5, endAngle: 0, clockwise: true)
+            path.append(cPath)
+            
+            let vPath = UIBezierPath()
+            vPath.move(to: CGPoint(x: startX + radius + shortLineWH, y: nodeHeight-shortLineWH))
+            vPath.addLine(to: CGPoint(x: startX + radius + shortLineWH, y: nodeHeight))
+            path.append(vPath)
             
             break
             
