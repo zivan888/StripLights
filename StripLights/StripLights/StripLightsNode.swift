@@ -27,7 +27,7 @@ class StripLightsNode: UIView {
     var span: StripNodeSpan
     var style: StripStyle
     
-    let lineWidth: CGFloat = 5.0
+    let lineWidth: CGFloat = 10.0
     
     var nodeWidth: CGFloat {
         return frame.size.width
@@ -55,20 +55,28 @@ class StripLightsNode: UIView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         guard let context = UIGraphicsGetCurrentContext() else { return }
-        let path = CGMutablePath()
-    
+        let path = UIBezierPath()
+        
         switch direction {
         case .TOP_TO_RIGHT: 
             let startX = firstNodeLeftWidthPadding()
             let startY = firstNodeTopHeightPadding()
-            let startPoint = CGPointMake(startX, startY)
             
-            path.move(to: startPoint)
-            
-            let topRect = CGRectMake(startX, startY, lineWidth, getFirstLineVerticalGauge())
+            let lineLength = getFirstLineVerticalGauge()
+            let topRect = CGRectMake(startX, startY, 0.01, lineLength-1)
             let cornerRadii = lineWidth/2.0
-            let topPath = UIBezierPath.init(roundedRect: topRect, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadii, height: cornerRadii))
-            path.addPath(topPath.cgPath)
+            let topPath = UIBezierPath.init(roundedRect: topRect, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: cornerRadii, height: 1))
+            path.append(topPath)
+            
+            let radius = (nodeWidth - startX) * 0.5
+            let arcCenter = CGPoint(x: startX + radius, y: topRect.maxY)
+            let circlePath = UIBezierPath.init(arcCenter: arcCenter, radius: radius, startAngle: Double.pi/2, endAngle: Double.pi, clockwise: true)
+            path.append(circlePath)
+            
+            let rightPath = UIBezierPath()
+            rightPath.move(to: CGPoint(x: startX + radius, y: topRect.maxY + radius))
+            rightPath.addLine(to: CGPoint(x: nodeWidth, y: topRect.maxY + radius))
+            path.append(rightPath)
             
             break
             
@@ -89,20 +97,19 @@ class StripLightsNode: UIView {
             break
         }
         
-        context.addPath(path)
-
-        context.setStrokeColor(color.cgColor)
         context.setLineWidth(lineWidth)
+        context.setStrokeColor(color.cgColor)
         context.setFillColor(color.cgColor)
-        
-        context.strokePath()
+
+        context.addPath(path.cgPath)
+        context.drawPath(using: .stroke)
     }
     
 }
 
 extension StripLightsNode {
     func firstNodeLeftWidthPadding() -> CGFloat {
-        return self.nodeHeight / 3.0
+        return self.nodeWidth / 3.0
     }
     func firstNodeTopHeightPadding() -> CGFloat {
         return self.nodeHeight / 10.0
