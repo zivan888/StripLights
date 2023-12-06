@@ -80,7 +80,7 @@ class StripLightsNode: UIView {
             
         case .HORIZONTAL:
             
-            let path1 = UIBezierPath.init()
+            let path1 = UIBezierPath()
             let yPosition = self.nodeHeight * 0.6
             path1.move(to: CGPoint(x: 0, y: yPosition))
             path1.addLine(to: CGPoint(x: self.nodeWidth, y: yPosition))
@@ -94,7 +94,7 @@ class StripLightsNode: UIView {
             
         case .TOP_TO_LEFT:
             // 1.画竖线
-            let path1 = UIBezierPath.init()
+            let path1 = UIBezierPath()
             let xPosition = self.nodeWidth * 0.6
             path1.move(to: CGPoint(x: xPosition, y: 0))
             path1.addLine(to: CGPoint(x: xPosition, y: getFirstLineVerticalGauge() * 2))
@@ -122,6 +122,30 @@ class StripLightsNode: UIView {
             
         case .RIGHT_TO_BOTTOM:
             
+            // 1.画横线
+            let path1 = UIBezierPath()
+            let yPosition1 = self.nodeHeight * 0.5 + lineWidth/2
+            path1.move(to: CGPoint(x: self.nodeWidth, y: yPosition1))
+            path1.addLine(to: CGPoint(x: self.nodeWidth - getFirstLineHorizontalGauge(), y: yPosition1))
+            path.addPath(path1.cgPath)
+            
+            // 2.画四分之一圆
+            let yPosition = self.nodeHeight - getFirstLineVerticalGauge()
+            let path2 = UIBezierPath(arcCenter: CGPoint(x: self.nodeWidth - getFirstLineHorizontalGauge(),
+                                                        y: yPosition),
+                                     radius: self.nodeWidth * 0.6 - getFirstLineHorizontalGauge(),
+                                     startAngle: 180 / 180 * .pi,
+                                     endAngle: 270 / 180 * .pi,
+                                     clockwise: true)
+            path.addPath(path2.cgPath)
+            
+            // 3.画竖线
+            let path3 = UIBezierPath()
+            let xPosition = self.nodeWidth * 0.4
+            path3.move(to: CGPoint(x: xPosition, y: yPosition))
+            path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight))
+            
+            path.addPath(path3.cgPath)
             break
         }
         
@@ -157,10 +181,6 @@ extension StripLightsNode {
     }
     func getBreakGauge() -> CGFloat {
         return self.nodeHeight / 30.0
-    }
-    
-    func getHotizontalLineWith() -> CGFloat {
-        return self.nodeHeight / 5.0
     }
 }
 
