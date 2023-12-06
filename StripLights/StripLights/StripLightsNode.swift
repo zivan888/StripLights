@@ -89,9 +89,9 @@ class StripLightsNode: UIView {
         case .HORIZONTAL:
             
             let path1 = UIBezierPath()
-            let yPosition = self.nodeHeight * 0.6
+            let yPosition = nodeHeight * 0.6
             path1.move(to: CGPoint(x: 0, y: yPosition))
-            path1.addLine(to: CGPoint(x: self.nodeWidth, y: yPosition))
+            path1.addLine(to: CGPoint(x: nodeWidth, y: yPosition))
             
             path.append(path1)
             break
@@ -120,7 +120,7 @@ class StripLightsNode: UIView {
         case .TOP_TO_LEFT:
             // 1.画竖线
             let path1 = UIBezierPath()
-            let xPosition = self.nodeWidth * 0.6
+            let xPosition = nodeWidth * 0.6
             path1.move(to: CGPoint(x: xPosition, y: 0))
             path1.addLine(to: CGPoint(x: xPosition, y: getFirstLineVerticalGauge() * 2))
             
@@ -129,7 +129,7 @@ class StripLightsNode: UIView {
             // 2.画四分之一圆弧
             let path2 = UIBezierPath(arcCenter: CGPoint(x: getFirstLineHorizontalGauge(),
                                                         y: getFirstLineVerticalGauge() * 2),
-                                     radius: self.nodeWidth * 0.6 - getFirstLineHorizontalGauge(),
+                                     radius: nodeWidth * 0.6 - getFirstLineHorizontalGauge(),
                                      startAngle: 360 / 180 * .pi,
                                      endAngle: 90 / 180 * .pi,
                                      clockwise: true)
@@ -137,7 +137,7 @@ class StripLightsNode: UIView {
             
             // 3.画横线
             let path3 = UIBezierPath()
-            let yPosition = self.nodeHeight * 0.6
+            let yPosition = nodeHeight * 0.6
             path3.move(to: CGPoint(x: getFirstLineHorizontalGauge(), y: yPosition))
             path3.addLine(to: CGPoint(x: 0, y: yPosition))
             
@@ -149,16 +149,16 @@ class StripLightsNode: UIView {
             
             // 1.画横线
             let path1 = UIBezierPath()
-            let yPosition1 = self.nodeHeight * 0.5 + lineWidth/2
-            path1.move(to: CGPoint(x: self.nodeWidth, y: yPosition1))
-            path1.addLine(to: CGPoint(x: self.nodeWidth - getFirstLineHorizontalGauge(), y: yPosition1))
+            let yPosition1 = nodeHeight * 0.5
+            path1.move(to: CGPoint(x: nodeWidth, y: yPosition1))
+            path1.addLine(to: CGPoint(x: nodeWidth - getFirstLineHorizontalGauge(), y: yPosition1))
             path.append(path1)
             
             // 2.画四分之一圆
-            let yPosition = self.nodeHeight - getFirstLineVerticalGauge()
-            let path2 = UIBezierPath(arcCenter: CGPoint(x: self.nodeWidth - getFirstLineHorizontalGauge(),
+            let yPosition = nodeHeight - getFirstLineVerticalGauge()
+            let path2 = UIBezierPath(arcCenter: CGPoint(x: nodeWidth - getFirstLineHorizontalGauge(),
                                                         y: yPosition),
-                                     radius: self.nodeWidth * 0.6 - getFirstLineHorizontalGauge(),
+                                     radius: nodeHeight * 0.5 - getFirstLineVerticalGauge(),
                                      startAngle: 180 / 180 * .pi,
                                      endAngle: 270 / 180 * .pi,
                                      clockwise: true)
@@ -166,18 +166,18 @@ class StripLightsNode: UIView {
             
             // 3.画竖线
             let path3 = UIBezierPath()
-            let xPosition = self.nodeWidth * 0.4
+            let xPosition = nodeWidth - (nodeHeight * 0.5 - getFirstLineVerticalGauge()) - getFirstLineHorizontalGauge()
             path3.move(to: CGPoint(x: xPosition, y: yPosition))
             switch span {
             case .LAST:
-                path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight - lineWidth * 0.5))
+                path3.addLine(to: CGPoint(x: xPosition, y: nodeHeight - lineWidth * 0.5))
                 path3.close()
                 path3.lineWidth = lineWidth
                 path3.lineJoinStyle = .round
                 color.set()
                 path3.stroke()
             case .NORMAL, .FIRST:
-                path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight))
+                path3.addLine(to: CGPoint(x: xPosition, y: nodeHeight))
             }
             
             path.append(path3)
