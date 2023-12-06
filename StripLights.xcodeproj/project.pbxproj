@@ -16,6 +16,7 @@
 		3BDDD2172B1F042C00C7C23C /* StripLightsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDDD2142B1F042C00C7C23C /* StripLightsNode.swift */; };
 		3BDDD2182B1F042C00C7C23C /* StripLightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDDD2152B1F042C00C7C23C /* StripLightsViewController.swift */; };
 		3BDDD2192B1F042C00C7C23C /* StripLightScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDDD2162B1F042C00C7C23C /* StripLightScreen.swift */; };
+		A48F6B4F0E9E92A787021D20 /* Pods_StripLights.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5626985FF6C95B32AE396458 /* Pods_StripLights.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,9 @@
 		3BDDD2142B1F042C00C7C23C /* StripLightsNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StripLightsNode.swift; sourceTree = "<group>"; };
 		3BDDD2152B1F042C00C7C23C /* StripLightsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StripLightsViewController.swift; sourceTree = "<group>"; };
 		3BDDD2162B1F042C00C7C23C /* StripLightScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StripLightScreen.swift; sourceTree = "<group>"; };
+		5626985FF6C95B32AE396458 /* Pods_StripLights.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StripLights.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB59367F5A7EF9CFC2A8FF0E /* Pods-StripLights.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StripLights.release.xcconfig"; path = "Target Support Files/Pods-StripLights/Pods-StripLights.release.xcconfig"; sourceTree = "<group>"; };
+		DA7F041F8176C9E6598A9AAF /* Pods-StripLights.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StripLights.debug.xcconfig"; path = "Target Support Files/Pods-StripLights/Pods-StripLights.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A48F6B4F0E9E92A787021D20 /* Pods_StripLights.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +53,8 @@
 			children = (
 				3BDDD1FE2B1F02CB00C7C23C /* StripLights */,
 				3BDDD1FD2B1F02CB00C7C23C /* Products */,
+				F58C46F21B7983E4784B3C43 /* Pods */,
+				E32AB3CDABE10F6164EEE1C2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -84,6 +91,23 @@
 			path = StripLights;
 			sourceTree = "<group>";
 		};
+		E32AB3CDABE10F6164EEE1C2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5626985FF6C95B32AE396458 /* Pods_StripLights.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F58C46F21B7983E4784B3C43 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DA7F041F8176C9E6598A9AAF /* Pods-StripLights.debug.xcconfig */,
+				BB59367F5A7EF9CFC2A8FF0E /* Pods-StripLights.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -91,9 +115,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BDDD2102B1F02CD00C7C23C /* Build configuration list for PBXNativeTarget "StripLights" */;
 			buildPhases = (
+				2747E4DF320056FB1A46B331 /* [CP] Check Pods Manifest.lock */,
 				3BDDD1F82B1F02CB00C7C23C /* Sources */,
 				3BDDD1F92B1F02CB00C7C23C /* Frameworks */,
 				3BDDD1FA2B1F02CB00C7C23C /* Resources */,
+				88E6C3C2B2F5C617F169AA5C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -149,6 +175,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2747E4DF320056FB1A46B331 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StripLights-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88E6C3C2B2F5C617F169AA5C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StripLights/Pods-StripLights-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StripLights/Pods-StripLights-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StripLights/Pods-StripLights-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3BDDD1F82B1F02CB00C7C23C /* Sources */ = {
@@ -307,12 +375,14 @@
 		};
 		3BDDD2112B1F02CD00C7C23C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA7F041F8176C9E6598A9AAF /* Pods-StripLights.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 43CR6478ME;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StripLights/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -336,12 +406,14 @@
 		};
 		3BDDD2122B1F02CD00C7C23C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB59367F5A7EF9CFC2A8FF0E /* Pods-StripLights.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 43CR6478ME;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StripLights/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

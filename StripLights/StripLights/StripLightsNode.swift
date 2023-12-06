@@ -37,7 +37,13 @@ class StripLightsNode: UIView {
         return frame.size.height
     }
 
-    init(frame: CGRect, color: UIColor = .white, bgColor: UIColor = .red, direction: StripNodeDirection = .TOP_TO_RIGHT, span: StripNodeSpan = .FIRST, style: StripStyle = .ONLY_LINE) {
+    init(frame: CGRect, 
+         color: UIColor = .white,
+         bgColor: UIColor = .red, 
+         direction: StripNodeDirection = .TOP_TO_RIGHT,
+         span: StripNodeSpan = .FIRST,
+         style: StripStyle = .ONLY_LINE)
+    {
         self.color = color
         self.bgColor = bgColor
         self.direction = direction
@@ -82,6 +88,12 @@ class StripLightsNode: UIView {
             
         case .HORIZONTAL:
             
+            let path1 = UIBezierPath()
+            let yPosition = self.nodeHeight * 0.6
+            path1.move(to: CGPoint(x: 0, y: yPosition))
+            path1.addLine(to: CGPoint(x: self.nodeWidth, y: yPosition))
+            
+            path.append(path1)
             break
             
         case .LEFT_TO_BOTTOM:
@@ -89,10 +101,69 @@ class StripLightsNode: UIView {
             break
             
         case .TOP_TO_LEFT:
+            // 1.画竖线
+            let path1 = UIBezierPath()
+            let xPosition = self.nodeWidth * 0.6
+            path1.move(to: CGPoint(x: xPosition, y: 0))
+            path1.addLine(to: CGPoint(x: xPosition, y: getFirstLineVerticalGauge() * 2))
+            
+            path.append(path1)
+            
+            // 2.画四分之一圆弧
+            let path2 = UIBezierPath(arcCenter: CGPoint(x: getFirstLineHorizontalGauge(),
+                                                        y: getFirstLineVerticalGauge() * 2),
+                                     radius: self.nodeWidth * 0.6 - getFirstLineHorizontalGauge(),
+                                     startAngle: 360 / 180 * .pi,
+                                     endAngle: 90 / 180 * .pi,
+                                     clockwise: true)
+            path.append(path2)
+            
+            // 3.画横线
+            let path3 = UIBezierPath()
+            let yPosition = self.nodeHeight * 0.6
+            path3.move(to: CGPoint(x: getFirstLineHorizontalGauge(), y: yPosition))
+            path3.addLine(to: CGPoint(x: 0, y: yPosition))
+            
+            path.append(path3)
             
             break
             
         case .RIGHT_TO_BOTTOM:
+            
+            // 1.画横线
+            let path1 = UIBezierPath()
+            let yPosition1 = self.nodeHeight * 0.5 + lineWidth/2
+            path1.move(to: CGPoint(x: self.nodeWidth, y: yPosition1))
+            path1.addLine(to: CGPoint(x: self.nodeWidth - getFirstLineHorizontalGauge(), y: yPosition1))
+            path.append(path1)
+            
+            // 2.画四分之一圆
+            let yPosition = self.nodeHeight - getFirstLineVerticalGauge()
+            let path2 = UIBezierPath(arcCenter: CGPoint(x: self.nodeWidth - getFirstLineHorizontalGauge(),
+                                                        y: yPosition),
+                                     radius: self.nodeWidth * 0.6 - getFirstLineHorizontalGauge(),
+                                     startAngle: 180 / 180 * .pi,
+                                     endAngle: 270 / 180 * .pi,
+                                     clockwise: true)
+            path.append(path2)
+            
+            // 3.画竖线
+            let path3 = UIBezierPath()
+            let xPosition = self.nodeWidth * 0.4
+            path3.move(to: CGPoint(x: xPosition, y: yPosition))
+            switch span {
+            case .LAST:
+                path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight - lineWidth * 0.5))
+                path3.close()
+                path3.lineWidth = lineWidth
+                path3.lineJoinStyle = .round
+                color.set()
+                path3.stroke()
+            case .NORMAL, .FIRST:
+                path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight))
+            }
+            
+            path.append(path3)
             
             break
         }
