@@ -100,27 +100,34 @@ class StripLightsNode: UIView {
             break
             
         case .LEFT_TO_BOTTOM:
-            let shortLineWH = getFirstLineVerticalGauge()
             let startX = 0.0
-            let radius = (nodeSize - shortLineWH - lineWidth) * 0.5
+            let startY = firstNodeTopHeightPadding()
+            
+            let lineLength = firstNodeTopHeightPadding()
+            let topRect = CGRectMake(startX, startY, 0.01, lineLength)
+            
+            let shortLineWH = getFirstLineVerticalGauge()
+            let radius = (nodeSize - firstNodeLeftWidthPadding()) * 0.5
+            
+            let hPathY = topRect.maxY+radius
             
             let hPath = UIBezierPath()
-            hPath.move(to: CGPoint(x: startX, y: nodeSize-radius-shortLineWH))
-            hPath.addLine(to: CGPoint(x: startX + shortLineWH, y: nodeSize-radius-shortLineWH))
+            hPath.move(to: CGPoint(x: startX, y: hPathY))
+            hPath.addLine(to: CGPoint(x: startX + shortLineWH, y: hPathY))
             path.append(hPath)
                         
-            let arcCenter = CGPoint(x: startX + shortLineWH, y: nodeSize - shortLineWH)
+            let arcCenter = CGPoint(x: startX + shortLineWH, y: hPathY + radius)
             let cPath = UIBezierPath.init(arcCenter: arcCenter, radius: radius, startAngle: Double.pi*1.5, endAngle: 0, clockwise: true)
             path.append(cPath)
             
             switch span {
             case .NORMAL:
                 let vPath = UIBezierPath()
-                vPath.move(to: CGPoint(x: startX + radius + shortLineWH, y: nodeSize-shortLineWH))
-                vPath.addLine(to: CGPoint(x: startX + radius + shortLineWH, y: nodeSize))
+                vPath.move(to: CGPoint(x: startX+shortLineWH+radius, y: hPathY + radius))
+                vPath.addLine(to: CGPoint(x: startX+shortLineWH+radius, y: nodeSize))
                 path.append(vPath)
             default:
-                let topRect = CGRectMake(startX + radius + shortLineWH, nodeSize-shortLineWH, 0.01, shortLineWH-6)
+                let topRect = CGRectMake(startX+shortLineWH+radius, nodeSize-shortLineWH, 0.01, shortLineWH-6)
                 let cornerRadii = lineWidth/2.0
                 let vPath = UIBezierPath.init(roundedRect: topRect, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: cornerRadii, height: cornerRadii))
                 path.append(vPath)
