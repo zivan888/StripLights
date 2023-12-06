@@ -143,9 +143,20 @@ class StripLightsNode: UIView {
             let path3 = UIBezierPath()
             let xPosition = self.nodeWidth * 0.4
             path3.move(to: CGPoint(x: xPosition, y: yPosition))
-            path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight))
+            switch span {
+            case .LAST:
+                path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight - lineWidth * 0.5))
+                path3.close()
+                path3.lineWidth = lineWidth
+                path3.lineJoinStyle = .round
+                color.set()
+                path3.stroke()
+            case .NORMAL, .FIRST:
+                path3.addLine(to: CGPoint(x: xPosition, y: self.nodeHeight))
+            }
             
             path.addPath(path3.cgPath)
+            
             break
         }
         
