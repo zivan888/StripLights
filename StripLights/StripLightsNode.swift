@@ -32,8 +32,8 @@ class StripLightsNode: UIView {
     var nodeSize: CGFloat = 0.0
 
     init(frame: CGRect, 
-         color: UIColor = .white,
-         bgColor: UIColor = .red, 
+         color: UIColor = .black,
+         bgColor: UIColor = .white,
          direction: StripNodeDirection = .TOP_TO_RIGHT,
          span: StripNodeSpan = .FIRST,
          style: StripStyle = .ONLY_LINE)
@@ -56,8 +56,6 @@ class StripLightsNode: UIView {
         super.draw(rect)
         guard let context = UIGraphicsGetCurrentContext() else { return }
         let path = UIBezierPath()
-        
-        var horiziontalY = 0.0
         
         switch direction {
         case .TOP_TO_RIGHT: 
@@ -146,27 +144,38 @@ class StripLightsNode: UIView {
             break
             
         case .TOP_TO_LEFT:
+            
+            let tempStartX = firstNodeLeftWidthPadding()
+            let startY = firstNodeTopHeightPadding()
+            let lineLength = firstNodeTopHeightPadding()
+            let topRect = CGRectMake(tempStartX, startY, 0.01, lineLength)
+            let radius = (nodeSize - tempStartX) * 0.5
+            let yPosition = topRect.maxY + radius
+            
             // 1.画竖线
             let path1 = UIBezierPath()
-            let xPosition = nodeSize * 0.6
+            let startX = 0.0
+            let shortLineWH = getFirstLineVerticalGauge()
+            let xPosition = startX + shortLineWH + radius
+            
             path1.move(to: CGPoint(x: xPosition, y: 0))
-            path1.addLine(to: CGPoint(x: xPosition, y: getFirstLineVerticalGauge() * 2))
+            path1.addLine(to: CGPoint(x: xPosition, y: topRect.maxY))
             
             path.append(path1)
-            
+
             // 2.画四分之一圆弧
-            let path2 = UIBezierPath(arcCenter: CGPoint(x: getFirstLineHorizontalGauge(),
-                                                        y: getFirstLineVerticalGauge() * 2),
-                                     radius: nodeSize * 0.6 - getFirstLineHorizontalGauge(),
+            let path2 = UIBezierPath(arcCenter: CGPoint(x: startX + shortLineWH,
+                                                        y: topRect.maxY),
+                                     radius: radius,
                                      startAngle: 360 / 180 * .pi,
                                      endAngle: 90 / 180 * .pi,
                                      clockwise: true)
             path.append(path2)
             
             // 3.画横线
+            
             let path3 = UIBezierPath()
-            let yPosition = nodeSize * 0.6
-            path3.move(to: CGPoint(x: getFirstLineHorizontalGauge(), y: yPosition))
+            path3.move(to: CGPoint(x: shortLineWH, y: yPosition))
             path3.addLine(to: CGPoint(x: 0, y: yPosition))
             
             path.append(path3)
@@ -175,18 +184,26 @@ class StripLightsNode: UIView {
             
         case .RIGHT_TO_BOTTOM:
             
+            let startX = firstNodeLeftWidthPadding()
+            let startY = firstNodeTopHeightPadding()
+            let lineLength = firstNodeTopHeightPadding()
+            let topRect = CGRectMake(startX, startY, 0.01, lineLength)
+            let radius = (nodeSize - startX) * 0.5
+            let yPosition1 = topRect.maxY + radius
+            let endX = nodeSize - startX
+            
             // 1.画横线
+            
             let path1 = UIBezierPath()
-            let yPosition1 = nodeSize * 0.5
             path1.move(to: CGPoint(x: nodeSize, y: yPosition1))
-            path1.addLine(to: CGPoint(x: nodeSize - getFirstLineHorizontalGauge(), y: yPosition1))
+            path1.addLine(to: CGPoint(x: endX, y: yPosition1))
             path.append(path1)
             
             // 2.画四分之一圆
-            let yPosition = nodeSize - getFirstLineVerticalGauge()
-            let path2 = UIBezierPath(arcCenter: CGPoint(x: nodeSize - getFirstLineHorizontalGauge(),
+            let yPosition = yPosition1 + radius
+            let path2 = UIBezierPath(arcCenter: CGPoint(x: endX,
                                                         y: yPosition),
-                                     radius: nodeSize * 0.5 - getFirstLineVerticalGauge(),
+                                     radius: radius,
                                      startAngle: 180 / 180 * .pi,
                                      endAngle: 270 / 180 * .pi,
                                      clockwise: true)
@@ -194,7 +211,7 @@ class StripLightsNode: UIView {
             
             // 3.画竖线
             let path3 = UIBezierPath()
-            let xPosition = nodeSize - (nodeSize * 0.5 - getFirstLineVerticalGauge()) - getFirstLineHorizontalGauge()
+            let xPosition = nodeSize - endX
             path3.move(to: CGPoint(x: xPosition, y: yPosition))
             switch span {
             case .LAST:
@@ -239,12 +256,4 @@ extension StripLightsNode {
     func getFirstLineHorizontalGauge() -> CGFloat {
         return self.nodeSize / 4.0
     }
-    func getRadiusOfSweep() -> CGFloat {
-        return self.nodeSize / 3.0
-    }
-    func getBreakGauge() -> CGFloat {
-        return self.nodeSize / 30.0
-    }
 }
-
-
