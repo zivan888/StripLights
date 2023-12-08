@@ -20,9 +20,9 @@ class HorizontalStackView: UIStackView {
 
 extension UIView {
     
-    class func getAllSubviews<T: UIView>(from parenView: UIView) -> [T] {
+    class func getAllLayerSubviews<T: UIView>(from parenView: UIView) -> [T] {
         return parenView.subviews.flatMap { subView -> [T] in
-            var result = getAllSubviews(from: subView) as [T]
+            var result = getAllLayerSubviews(from: subView) as [T]
             if let view = subView as? T { result.append(view) }
             return result
         }
@@ -31,14 +31,13 @@ extension UIView {
 
 extension StripLightsContainer {
     
-    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         
         guard let touch = touches.first else { return }
         let touchePoint = touch.location(in: self)
         
-        for subView in UIView.getAllSubviews(from: self) {
+        for subView in UIView.getAllLayerSubviews(from: self) {
             let insidePoint = self.convert(touchePoint, to: subView)
             let hitView = subView.hitTest(insidePoint, with: event)
 
