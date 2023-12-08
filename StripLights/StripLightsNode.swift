@@ -67,6 +67,7 @@ class StripLightsNode: UIView {
         
         guard let context = UIGraphicsGetCurrentContext() else { return }
         let path = UIBezierPath()
+        var dotPath = UIBezierPath()
         
         switch direction {
         case .TOP_TO_RIGHT: 
@@ -109,14 +110,9 @@ class StripLightsNode: UIView {
             
             if style == .WITH_BEAD {
                 
-                let dotPath = UIBezierPath()
+                dotPath = UIBezierPath()
                 dotPath.move(to: CGPoint(x: startX + radius - xDelta, y: topRect.maxY + radius - yDelta))
                 dotPath.addLine(to: CGPoint(x: startX + radius - xDelta, y: topRect.maxY + radius - yDelta - 0.1))
-                dotPath.close()
-                dotPath.lineWidth = lineWidth * 4
-                dotPath.lineJoinStyle = .round
-                color.set()
-                dotPath.stroke()
             }
             
             break
@@ -322,6 +318,12 @@ class StripLightsNode: UIView {
 
         context.addPath(path.cgPath)
         context.drawPath(using: .stroke)
+        
+        dotPath.close()
+        dotPath.lineWidth = lineWidth * 4
+        dotPath.lineJoinStyle = .round
+        UIColor.red.withAlphaComponent(1.0).set()
+        dotPath.stroke()
     }
     
 }
