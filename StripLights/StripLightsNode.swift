@@ -22,7 +22,8 @@ enum StripStyle {
 class StripLightsNode: UIView {
     
     var lineWidth: CGFloat = 10.0
-    var color: UIColor
+    var lineColor: UIColor
+    var dotColor: UIColor = UIColor.green
     var bgColor: UIColor
     var direction: StripNodeDirection
     var span: StripNodeSpan
@@ -48,7 +49,8 @@ class StripLightsNode: UIView {
          span: StripNodeSpan = .FIRST,
          style: StripStyle = .ONLY_LINE)
     {
-        self.color = color
+        self.lineColor = color
+        self.dotColor = color
         self.bgColor = bgColor
         self.direction = direction
         self.span = span
@@ -134,14 +136,8 @@ class StripLightsNode: UIView {
             
             if style == .WITH_BEAD {
                 
-                let dotPath = UIBezierPath()
                 dotPath.move(to: CGPoint(x: nodeSize * 0.5 - xDelta - 0.1, y: yPosition))
                 dotPath.addLine(to: CGPoint(x: nodeSize * 0.5 - xDelta, y: yPosition))
-                dotPath.close()
-                dotPath.lineWidth = lineWidth * 4
-                dotPath.lineJoinStyle = .round
-                color.set()
-                dotPath.stroke()
             }
             
             break
@@ -166,14 +162,8 @@ class StripLightsNode: UIView {
             
             if style == .WITH_BEAD {
                 
-                let dotPath = UIBezierPath()
                 dotPath.move(to: CGPoint(x: startX + lineWidth * 4 + xDelta, y: hPathY + yDelta))
                 dotPath.addLine(to: CGPoint(x: startX + lineWidth * 4 + xDelta, y: hPathY + yDelta + 0.1))
-                dotPath.close()
-                dotPath.lineWidth = lineWidth * 4
-                dotPath.lineJoinStyle = .round
-                color.set()
-                dotPath.stroke()
             }
                         
             let arcCenter = CGPoint(x: startX + shortLineWH, y: hPathY + radius)
@@ -240,14 +230,8 @@ class StripLightsNode: UIView {
             
             if style == .WITH_BEAD {
                 
-                let dotPath = UIBezierPath()
                 dotPath.move(to: CGPoint(x: shortLineWH + xDelta, y: yPosition - yDelta))
                 dotPath.addLine(to: CGPoint(x: shortLineWH + xDelta, y: yPosition - yDelta - 0.1))
-                dotPath.close()
-                dotPath.lineWidth = lineWidth * 4
-                dotPath.lineJoinStyle = .round
-                color.set()
-                dotPath.stroke()
             }
             
             break
@@ -271,14 +255,8 @@ class StripLightsNode: UIView {
             
             if style == .WITH_BEAD {
                 
-                let dotPath = UIBezierPath()
                 dotPath.move(to: CGPoint(x: endX - xDelta, y: yPosition1 + yDelta))
                 dotPath.addLine(to: CGPoint(x: endX - xDelta, y: yPosition1 + yDelta + 0.1))
-                dotPath.close()
-                dotPath.lineWidth = lineWidth * 4
-                dotPath.lineJoinStyle = .round
-                color.set()
-                dotPath.stroke()
             }
             
             // 2.画四分之一圆
@@ -301,7 +279,7 @@ class StripLightsNode: UIView {
                 path3.close()
                 path3.lineWidth = lineWidth
                 path3.lineJoinStyle = .round
-                color.set()
+                lineColor.set()
                 path3.stroke()
             case .NORMAL, .FIRST:
                 path3.addLine(to: CGPoint(x: xPosition, y: nodeSize))
@@ -313,8 +291,8 @@ class StripLightsNode: UIView {
         }
         
         context.setLineWidth(lineWidth)
-        context.setStrokeColor(color.cgColor)
-        context.setFillColor(color.cgColor)
+        context.setStrokeColor(lineColor.cgColor)
+        context.setFillColor(lineColor.cgColor)
 
         context.addPath(path.cgPath)
         context.drawPath(using: .stroke)
@@ -322,7 +300,7 @@ class StripLightsNode: UIView {
         dotPath.close()
         dotPath.lineWidth = lineWidth * 4
         dotPath.lineJoinStyle = .round
-        UIColor.red.withAlphaComponent(1.0).set()
+        dotColor.set()
         dotPath.stroke()
     }
     
@@ -354,11 +332,18 @@ extension StripLightsNode {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
 
-        if self.color != UIColor.red {
-            self.color = UIColor.red
-            
-            print("\(self), touchesBegan ...")
-            self.setNeedsDisplay()
+        if style == .WITH_BEAD {
+            if self.dotColor != UIColor.red {
+                self.dotColor = UIColor.red
+                self.setNeedsDisplay()
+            }
+        } else {
+            if self.lineColor != UIColor.red {
+                self.lineColor = UIColor.red
+                
+                print("\(self), touchesBegan ...")
+                self.setNeedsDisplay()
+            }
         }
     }
     

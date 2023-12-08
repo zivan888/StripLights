@@ -41,11 +41,21 @@ extension StripLightsContainer {
             let insidePoint = self.convert(touchePoint, to: subView)
             let hitView = subView.hitTest(insidePoint, with: event)
 
-            if let hitView = hitView as? StripLightsNode, hitView.color != UIColor.red {
-
-                hitView.color = UIColor.red
-                hitView.setNeedsDisplay()
-                print("ddd")
+            if let hitView = hitView as? StripLightsNode, hitView.lineColor != UIColor.red {
+                
+                if hitView.style == .WITH_BEAD {
+                    if hitView.dotColor != UIColor.red {
+                        hitView.dotColor = UIColor.red
+                        hitView.setNeedsDisplay()
+                    }
+                } else {
+                    if hitView.lineColor != UIColor.red {
+                        hitView.lineColor = UIColor.red
+                        
+                        print("\(self), touchesBegan ...")
+                        hitView.setNeedsDisplay()
+                    }
+                }
             }
         }
         
