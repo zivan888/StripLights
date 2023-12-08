@@ -46,6 +46,7 @@ class StripLightsNode: UIView {
         
         super.init(frame: frame)
         self.backgroundColor = bgColor
+//        self.isUserInteractionEnabled = false
     }
     
     required init?(coder: NSCoder) {
@@ -241,19 +242,39 @@ class StripLightsNode: UIView {
 }
 
 extension StripLightsNode {
+    
     func firstNodeLeftWidthPadding() -> CGFloat {
         return self.nodeSize / 3.0
     }
+    
     func firstNodeTopHeightPadding() -> CGFloat {
         return self.nodeSize / 10.0
     }
-
-    //for TOP_TO_LEFT & TOP_TO_RIGHT
+    
+    // For TOP_TO_LEFT & TOP_TO_RIGHT
     func getFirstLineVerticalGauge() -> CGFloat {
         return self.nodeSize / 8.0
     }
-    //for LEFT_TO_BOTTOM & RIGHT_TO_BOTTOM
+    
+    // For LEFT_TO_BOTTOM & RIGHT_TO_BOTTOM
     func getFirstLineHorizontalGauge() -> CGFloat {
         return self.nodeSize / 4.0
     }
+}
+
+extension StripLightsNode {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        print("\(self), touchesBegan ...")
+        guard let touch = touches.first else { return }
+        let touchePoint = touch.location(in: self)
+
+        if self.color != UIColor.red {
+            self.color = UIColor.red
+            self.setNeedsDisplay()
+        }
+    }
+    
 }
