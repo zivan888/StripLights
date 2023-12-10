@@ -7,17 +7,6 @@
 
 import UIKit
 
-class HorizontalStackView: UIStackView {
-    
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-}
-
 extension UIView {
     
     class func getAllLayerSubviews<T: UIView>(from parenView: UIView) -> [T] {
@@ -29,7 +18,7 @@ extension UIView {
     }
 }
 
-extension StripLightsContainer {
+extension StripLightsView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
@@ -62,14 +51,16 @@ extension StripLightsContainer {
     }
 }
 
-class StripLightsContainer: UIStackView {
+class StripLightsView: UIStackView {
     
-    typealias AllType = (StripNodeDirection, StripNodeSpan, StripStyle)
+    typealias AllType = (StripNodeDirection, StripNodeSpan)
 
     var dataSource: [AllType]?
-    var dimension: Double = 0.0
-    var horizontalStackView: HorizontalStackView?
+    var dimension: Int = 0
+    var horizontalStackView: UIStackView?
     var singleSize: Double = 0.0
+    var stripStyle: StripStyle = .ONLY_LINE
+    var stripBackgroundColor = UIColor.white
     
     required init(coder: NSCoder) {
         super.init(coder: coder)
@@ -83,12 +74,22 @@ class StripLightsContainer: UIStackView {
         setupView()
     }
     
-    convenience init(dataSource: [AllType], dimension: Double, singleSize: Double) {
+    convenience init(dataSource: [AllType], dimension: Int, singleSize: Double, stripBackgroundColor: String, stripStyle: String) {
         self.init()
         
         self.dataSource = dataSource
         self.dimension = dimension
         self.singleSize = singleSize
+        
+        if stripStyle == "ONLY_LINE" {
+            self.stripStyle = .ONLY_LINE
+        } else if stripStyle == "WITH_BEAD" {
+            self.stripStyle = .WITH_BEAD
+        }
+        
+        if let tempBackColor = Int(stripBackgroundColor) {
+            self.stripBackgroundColor = UIColor.init(hex: tempBackColor)
+        }
         
         setupView()
     }
@@ -138,7 +139,7 @@ class StripLightsContainer: UIStackView {
             
             // 换行
             if index % Int(dimension) == 0 {
-                horizontalStackView = HorizontalStackView()
+                horizontalStackView = UIStackView()
                 horizontalStackView!.axis = .horizontal
                 horizontalStackView!.distribution = .fillEqually
                 horizontalStackView!.spacing = 0
@@ -151,7 +152,7 @@ class StripLightsContainer: UIStackView {
             stripLightView.nodeSize = singleSize
             stripLightView.direction = item.0
             stripLightView.span = item.1
-            stripLightView.style = item.2
+            stripLightView.style = stripStyle
             
             horizontalStackView!.addArrangedSubview(stripLightView)
             

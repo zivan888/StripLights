@@ -8,48 +8,69 @@
 import UIKit
 import SnapKit
 
+extension UIColor {
+    
+    public convenience init(hex: Int, alpha: CGFloat = 1) {
+        self.init(
+            red: CGFloat((hex & 0xFF0000) >> 16)/255.0,
+            green: CGFloat((hex & 0xFF00) >> 8)/255.0,
+            blue: CGFloat((hex & 0xFF))/255.0,
+            alpha: alpha
+        )
+    }
+}
+
 class ViewController: UIViewController {
     
-    var dataSource: [StripLightsContainer.AllType] = [(StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.FIRST, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.TOP_TO_LEFT, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.RIGHT_TO_BOTTOM, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.ONLY_LINE),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.TOP_TO_LEFT, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.RIGHT_TO_BOTTOM, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL, StripStyle.WITH_BEAD),
-                                                      (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.LAST, StripStyle.WITH_BEAD)]
+    var nodes: [StripLightsView.AllType] = [(StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.FIRST),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.TOP_TO_LEFT, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.RIGHT_TO_BOTTOM, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.TOP_TO_LEFT, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.RIGHT_TO_BOTTOM, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
+                                            (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.LAST)]
+    
+    var fixCount: Int = 5
+    var stripStyle: String = "WITH_BEAD"
+    
+    let stripBackgroundColor: String = "0xF2F2F7"
+    let touchingMode = "TOUCH" // or "CLICK"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let dimension: Double = 5
-        let singleSize = self.view.frame.size.width / dimension
-        let mainStackView = StripLightsContainer(dataSource: dataSource, dimension: dimension, singleSize: singleSize)
+        let singleSize = self.view.frame.size.width / Double(fixCount)
+        let mainStackView = StripLightsView(dataSource: nodes,
+                                            dimension: fixCount,
+                                            singleSize: singleSize,
+                                            stripBackgroundColor: stripBackgroundColor,
+                                            stripStyle: stripStyle)
         
         view.addSubview(mainStackView)
         mainStackView.snp.remakeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalTo(singleSize * dimension)
+            make.width.equalTo(singleSize * Double(fixCount))
             // 高度需要判断
-            let n = dataSource.count / Int(dimension)
-            let m = dataSource.count % Int(dimension)
+            let n = nodes.count / fixCount
+            let m = nodes.count % fixCount
             if m == 0 {
                 make.height.equalTo(singleSize * Double(n))
             } else {

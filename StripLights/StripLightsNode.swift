@@ -221,7 +221,6 @@ class StripLightsNode: UIView {
             path.append(path2)
             
             // 3.画横线
-            
             let path3 = UIBezierPath()
             path3.move(to: CGPoint(x: shortLineWH, y: yPosition))
             path3.addLine(to: CGPoint(x: 0, y: yPosition))
@@ -298,7 +297,7 @@ class StripLightsNode: UIView {
         context.drawPath(using: .stroke)
         
         dotPath.close()
-        dotPath.lineWidth = lineWidth * 4
+        dotPath.lineWidth = lineWidth * 8
         dotPath.lineJoinStyle = .round
         dotColor.set()
         dotPath.stroke()

@@ -3,4 +3,114 @@
    uuid = "25DA3DDC-D62B-4083-9B6C-A92F0E7DBA7A"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BC05A72C-2808-4E58-8C6B-602E5FE34F72"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "StripLights/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "nodes"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "BC05A72C-2808-4E58-8C6B-602E5FE34F72 - d25632090fa7a10f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StripLights.ViewController.nodes.getter : Swift.Array&lt;(StripLights.StripNodeDirection, StripLights.StripNodeSpan)&gt;"
+                  moduleName = "StripLights"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beetli/StripLights/StripLights/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  uuid = "BC05A72C-2808-4E58-8C6B-602E5FE34F72 - d25632090fa7a444"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StripLights.ViewController.nodes.setter : Swift.Array&lt;(StripLights.StripNodeDirection, StripLights.StripNodeSpan)&gt;"
+                  moduleName = "StripLights"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beetli/StripLights/StripLights/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "BC05A72C-2808-4E58-8C6B-602E5FE34F72 - d25632090fa7a444"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StripLights.ViewController.nodes.modify : Swift.Array&lt;(StripLights.StripNodeDirection, StripLights.StripNodeSpan)&gt;"
+                  moduleName = "StripLights"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beetli/StripLights/StripLights/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "BC05A72C-2808-4E58-8C6B-602E5FE34F72 - 4c56d96af397c3e3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StripLights.ViewController.nodes.modify : Swift.Array&lt;(StripLights.StripNodeDirection, StripLights.StripNodeSpan)&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "StripLights"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beetli/StripLights/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "15">
+               </Location>
+               <Location
+                  uuid = "BC05A72C-2808-4E58-8C6B-602E5FE34F72 - cc172f1869196e30"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StripLights.ViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; StripLights.ViewController"
+                  moduleName = "StripLights"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beetli/StripLights/StripLights/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "154">
+               </Location>
+               <Location
+                  uuid = "BC05A72C-2808-4E58-8C6B-602E5FE34F72 - cd54943e649712a5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "StripLights.ViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;StripLights.ViewController&gt;"
+                  moduleName = "StripLights"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beetli/StripLights/StripLights/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "108">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
