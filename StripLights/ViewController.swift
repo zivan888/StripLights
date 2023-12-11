@@ -22,37 +22,30 @@ extension UIColor {
 
 class ViewController: UIViewController {
     
-    var nodes: [StripLightsView.AllType] = [(StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.FIRST),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.TOP_TO_LEFT, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.RIGHT_TO_BOTTOM, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.TOP_TO_LEFT, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.RIGHT_TO_BOTTOM, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.TOP_TO_RIGHT, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.HORIZONTAL, StripNodeSpan.NORMAL),
-                                            (StripNodeDirection.LEFT_TO_BOTTOM, StripNodeSpan.LAST)]
+    var nodes: [[String: Any]] = [["color": "#FF0000", "backgroundColor": "#00FF00"],
+                                  ["color": "#00FF00", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#00FF00", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#00FF00", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#00FF00", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#00FF00", "backgroundColor": "#00FF00"],
+                                  ["color": "#FF0000", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#00FF00", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#0000FF", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#FF0000", "backgroundColor": "#00FF00"],
+                                  ["color": "#00FF00", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#0000FF", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#FF0000", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#00FF00", "backgroundColor": "#00FF00"],
+                                  ["color": "#0000FF", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#FF0000", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#00FF00", "backgroundColor": "#FFFFFF"],
+                                  ["color": "#0000FF", "backgroundColor": "#FFFFFF"]]
     
     var fixCount: Int = 5
     var stripStyle: String = "WITH_BEAD"
     
-    let stripBackgroundColor: String = "0xF2F2F7"
-    let touchingMode = "TOUCH" // or "CLICK"
+    let stripBackgroundColor: String = "#FFFFFF"
+    let touchingMode = "CLICK" // or "CLICK"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +55,8 @@ class ViewController: UIViewController {
                                             dimension: fixCount,
                                             singleSize: singleSize,
                                             stripBackgroundColor: stripBackgroundColor,
-                                            stripStyle: stripStyle)
+                                            stripStyle: stripStyle,
+                                            touchingMode: touchingMode)
         
         view.addSubview(mainStackView)
         mainStackView.snp.remakeConstraints { make in

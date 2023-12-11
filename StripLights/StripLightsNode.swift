@@ -24,17 +24,18 @@ class StripLightsNode: UIView {
     var lineWidth: CGFloat = 10.0
     var lineColor: UIColor
     var dotColor: UIColor = UIColor.green
-    var bgColor: UIColor
+    var backColor: UIColor
     var direction: StripNodeDirection
     var span: StripNodeSpan
     var nodeSize: CGFloat = 0.0
+    var touchingMode: String = ""
     var style: StripStyle {
         didSet {
             switch style {
             case .ONLY_LINE:
                 lineWidth = 10.0
             case .WITH_BEAD:
-                lineWidth = 3.0
+                lineWidth = 5.0
             }
         }
     }
@@ -43,21 +44,23 @@ class StripLightsNode: UIView {
     let yDelta = 5.0
 
     init(frame: CGRect, 
-         color: UIColor = .black,
+         dotColor: UIColor = .black,
          bgColor: UIColor = .white,
          direction: StripNodeDirection = .TOP_TO_RIGHT,
          span: StripNodeSpan = .FIRST,
-         style: StripStyle = .ONLY_LINE)
+         style: StripStyle = .ONLY_LINE, 
+         nodeSize: CGFloat)
     {
-        self.lineColor = color
-        self.dotColor = color
-        self.bgColor = bgColor
+        self.lineColor = .black
+        self.dotColor = dotColor
+        self.backColor = bgColor
         self.direction = direction
         self.span = span
         self.style = style
+        self.nodeSize = nodeSize
         
         super.init(frame: frame)
-        self.backgroundColor = bgColor
+        self.backgroundColor = backColor
     }
     
     required init?(coder: NSCoder) {
@@ -161,9 +164,9 @@ class StripLightsNode: UIView {
             path.append(hPath)
             
             if style == .WITH_BEAD {
-                
-                dotPath.move(to: CGPoint(x: startX + lineWidth * 4 + xDelta, y: hPathY + yDelta))
-                dotPath.addLine(to: CGPoint(x: startX + lineWidth * 4 + xDelta, y: hPathY + yDelta + 0.1))
+                let offset = xDelta - xDelta / 3
+                dotPath.move(to: CGPoint(x: startX + lineWidth * 4 + offset, y: hPathY + yDelta))
+                dotPath.addLine(to: CGPoint(x: startX + lineWidth * 4 + offset, y: hPathY + yDelta + 0.1))
             }
                         
             let arcCenter = CGPoint(x: startX + shortLineWH, y: hPathY + radius)
@@ -297,7 +300,7 @@ class StripLightsNode: UIView {
         context.drawPath(using: .stroke)
         
         dotPath.close()
-        dotPath.lineWidth = lineWidth * 8
+        dotPath.lineWidth = lineWidth * 4
         dotPath.lineJoinStyle = .round
         dotColor.set()
         dotPath.stroke()
@@ -330,6 +333,8 @@ extension StripLightsNode {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
+        
+        guard touchingMode == "TOUCH" else { return }
 
         if style == .WITH_BEAD {
             if self.dotColor != UIColor.red {
@@ -340,10 +345,8 @@ extension StripLightsNode {
             if self.lineColor != UIColor.red {
                 self.lineColor = UIColor.red
                 
-                print("\(self), touchesBegan ...")
                 self.setNeedsDisplay()
             }
         }
     }
-    
 }
