@@ -29,6 +29,7 @@ class StripLightsNode: UIView {
     var span: StripNodeSpan
     var nodeSize: CGFloat = 0.0
     var touchingMode: String = ""
+    var index = 0
     var style: StripStyle {
         didSet {
             switch style {
@@ -49,15 +50,17 @@ class StripLightsNode: UIView {
          direction: StripNodeDirection = .TOP_TO_RIGHT,
          span: StripNodeSpan = .FIRST,
          style: StripStyle = .ONLY_LINE, 
-         nodeSize: CGFloat)
+         nodeSize: CGFloat,
+         index: Int)
     {
-        self.lineColor = .black
+        self.lineColor = .gray
         self.dotColor = dotColor
         self.backColor = bgColor
         self.direction = direction
         self.span = span
         self.style = style
         self.nodeSize = nodeSize
+        self.index = index
         
         super.init(frame: frame)
         self.backgroundColor = backColor
@@ -109,7 +112,18 @@ class StripLightsNode: UIView {
             
             let rightPath = UIBezierPath()
             rightPath.move(to: CGPoint(x: startX + radius, y: topRect.maxY + radius))
-            rightPath.addLine(to: CGPoint(x: nodeSize, y: topRect.maxY + radius))
+            
+            switch span {
+            case .LAST:
+                rightPath.addLine(to: CGPoint(x: nodeSize - lineWidth * 0.5, y: topRect.maxY + radius))
+                rightPath.close()
+                rightPath.lineWidth = lineWidth
+                rightPath.lineJoinStyle = .round
+                lineColor.set()
+                rightPath.stroke()
+            case .NORMAL, .FIRST:
+                rightPath.addLine(to: CGPoint(x: nodeSize, y: topRect.maxY + radius))
+            }
             
             path.append(rightPath)
             
@@ -164,9 +178,8 @@ class StripLightsNode: UIView {
             path.append(hPath)
             
             if style == .WITH_BEAD {
-                let offset = xDelta - xDelta / 3
-                dotPath.move(to: CGPoint(x: startX + lineWidth * 4 + offset, y: hPathY + yDelta))
-                dotPath.addLine(to: CGPoint(x: startX + lineWidth * 4 + offset, y: hPathY + yDelta + 0.1))
+                dotPath.move(to: CGPoint(x: startX + shortLineWH + xDelta, y: hPathY + yDelta))
+                dotPath.addLine(to: CGPoint(x: startX + shortLineWH + xDelta, y: hPathY + yDelta + 0.1))
             }
                         
             let arcCenter = CGPoint(x: startX + shortLineWH, y: hPathY + radius)
@@ -226,12 +239,22 @@ class StripLightsNode: UIView {
             // 3.画横线
             let path3 = UIBezierPath()
             path3.move(to: CGPoint(x: shortLineWH, y: yPosition))
-            path3.addLine(to: CGPoint(x: 0, y: yPosition))
+            
+            switch span {
+            case .LAST:
+                path3.addLine(to: CGPoint(x: lineWidth * 0.5, y: yPosition))
+                path3.close()
+                path3.lineWidth = lineWidth
+                path3.lineJoinStyle = .round
+                lineColor.set()
+                path3.stroke()
+            case .NORMAL, .FIRST:
+                path3.addLine(to: CGPoint(x: 0, y: yPosition))
+            }
             
             path.append(path3)
             
             if style == .WITH_BEAD {
-                
                 dotPath.move(to: CGPoint(x: shortLineWH + xDelta, y: yPosition - yDelta))
                 dotPath.addLine(to: CGPoint(x: shortLineWH + xDelta, y: yPosition - yDelta - 0.1))
             }

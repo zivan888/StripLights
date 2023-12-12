@@ -37,6 +37,10 @@ extension StripLightsView {
                     if hitView.dotColor != UIColor.red {
                         hitView.dotColor = UIColor.red
                         hitView.setNeedsDisplay()
+                        // TO DO:
+                        // onNodeTouched(hitView.index)
+                        // onFingerUp(indexes)
+                        indexes.removeAll()
                     }
                 } else {
                     if hitView.lineColor != UIColor.red {
@@ -44,6 +48,10 @@ extension StripLightsView {
                         
                         print("\(self), touchesBegan ...")
                         hitView.setNeedsDisplay()
+                        // TO DO:
+                        // onNodeTouched(hitView.index)
+                        // onFingerUp(indexes)
+                        indexes.removeAll()
                     }
                 }
             }
@@ -67,6 +75,10 @@ extension StripLightsView {
                     if hitView.dotColor != UIColor.red {
                         hitView.dotColor = UIColor.red
                         hitView.setNeedsDisplay()
+                        // TO DO:
+                        // onNodeTouched(hitView.index) --> Int
+                        
+                        indexes.insert(hitView.index)
                     }
                 } else {
                     if hitView.lineColor != UIColor.red {
@@ -74,6 +86,10 @@ extension StripLightsView {
                         
                         print("\(self), touchesBegan ...")
                         hitView.setNeedsDisplay()
+                        // TO DO:
+                        // onNodeTouched(hitView.index)
+                        
+                        indexes.insert(hitView.index)
                     }
                 }
             }
@@ -95,6 +111,7 @@ class StripLightsView: UIStackView {
     var stripStyle: StripStyle = .ONLY_LINE
     var stripBackgroundColor: UIColor?
     var touchingMode: String = ""
+    var indexes = Set<Int>()
     
     required init(coder: NSCoder) {
         super.init(coder: coder)
@@ -108,7 +125,7 @@ class StripLightsView: UIStackView {
         setupView()
     }
     
-    convenience init(dataSource: [[String: Any]],
+    convenience init(dataSource: String,
                      dimension: Int,
                      singleSize: Double,
                      stripBackgroundColor: String?,
@@ -117,7 +134,23 @@ class StripLightsView: UIStackView {
     {
         self.init()
         
-        self.dataSource = dataSource
+        func jsonStrToDic(jsonString: String) -> [[String: Any]]? {
+            
+            if let jsonData = jsonString.data(using: .utf8) {
+                do {
+                    if let jsonArray = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String: Any]] {
+                        print(jsonArray)
+                        return jsonArray
+                    }
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
+            
+            return nil
+        }
+        
+        self.dataSource = jsonStrToDic(jsonString: dataSource)
         self.dimension = dimension
         self.singleSize = singleSize
         self.touchingMode = touchingMode
@@ -183,6 +216,9 @@ class StripLightsView: UIStackView {
             }
         }
         
+        let tempLastArr: [StripNodeDirection] = [.TOP_TO_LEFT, .TOP_TO_RIGHT, .RIGHT_TO_BOTTOM, .LEFT_TO_BOTTOM]
+        var lastDirection: StripNodeDirection = .HORIZONTAL
+        
         for (index, item) in dataSource.enumerated() {
             
             // 这里需要对每个Node从字典类型转换到AllType类型
@@ -190,7 +226,22 @@ class StripLightsView: UIStackView {
             var finalItem: AllType = (.HORIZONTAL, .NORMAL, .white, .black)
             
             if index < stripNodeDirectionArr.count {
-                finalItem.0 = stripNodeDirectionArr[index]
+                if index < dataSource.count - 1 {
+                    finalItem.0 = stripNodeDirectionArr[index]
+                    if tempLastArr.contains(finalItem.0) {
+                        lastDirection = finalItem.0
+                    }
+                } else {
+                    if lastDirection == .TOP_TO_LEFT {
+                        finalItem.0 = .RIGHT_TO_BOTTOM
+                    } else if lastDirection == .TOP_TO_RIGHT {
+                        finalItem.0 = .LEFT_TO_BOTTOM
+                    } else if lastDirection == .RIGHT_TO_BOTTOM {
+                        finalItem.0 = .TOP_TO_RIGHT
+                    } else if lastDirection == .LEFT_TO_BOTTOM {
+                        finalItem.0 = .TOP_TO_LEFT
+                    }
+                }
             }
             
             if index == 0 {
@@ -209,7 +260,7 @@ class StripLightsView: UIStackView {
                 finalItem.3 = stripBackgroundColor
             } else if let backgroundColor = item["backgroundColor"] as? String {
                 let finalBackgroundColor = hexStringToInt(from: backgroundColor)
-                finalItem.3 = UIColor.init(hex: finalBackgroundColor)
+                finalItem.3 = UIColor(hex: finalBackgroundColor)
             }
             // 换行
             if index % Int(dimension) == 0 && index != 0 {
@@ -255,7 +306,8 @@ class StripLightsView: UIStackView {
                                                  bgColor: finalItem.3,
                                                  direction: finalItem.0,
                                                  span: finalItem.1,
-                                                 nodeSize: singleSize)
+                                                 nodeSize: singleSize,
+                                                 index: index)
             stripLightView.style = stripStyle
             stripLightView.touchingMode = touchingMode
             
