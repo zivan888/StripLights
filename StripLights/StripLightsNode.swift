@@ -190,18 +190,19 @@ class StripLightsNode: UIView {
                                           clockwise: true)
             path.append(cPath)
             
+            let vPath = UIBezierPath()
+            vPath.move(to: CGPoint(x: startX+shortLineWH+radius, y: hPathY + radius))
+            
             switch span {
-            case .NORMAL:
-                let vPath = UIBezierPath()
-                vPath.move(to: CGPoint(x: startX+shortLineWH+radius, y: hPathY + radius))
+            case .LAST:
+                vPath.addLine(to: CGPoint(x: startX+shortLineWH+radius, y: nodeSize - lineWidth * 0.5))
+                vPath.close()
+                vPath.lineWidth = lineWidth
+                vPath.lineJoinStyle = .round
+                lineColor.set()
+                vPath.stroke()
+            case .NORMAL, .FIRST:
                 vPath.addLine(to: CGPoint(x: startX+shortLineWH+radius, y: nodeSize))
-                path.append(vPath)
-            default:
-                let topRect = CGRectMake(startX+shortLineWH+radius, hPathY + radius, 0.01, shortLineWH-6)
-                let cornerRadii = lineWidth/2.0
-                let vPath = UIBezierPath.init(roundedRect: topRect, 
-                                              byRoundingCorners: [.bottomLeft, .bottomRight],
-                                              cornerRadii: CGSize(width: cornerRadii, height: cornerRadii))
                 path.append(vPath)
             }
             

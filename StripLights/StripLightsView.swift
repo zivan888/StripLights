@@ -31,7 +31,7 @@ extension StripLightsView {
             let insidePoint = self.convert(touchePoint, to: subView)
             let hitView = subView.hitTest(insidePoint, with: event)
 
-            if let hitView = hitView as? StripLightsNode, hitView.lineColor != UIColor.red {
+            if let hitView = hitView as? StripLightsNode {
                 
                 if hitView.style == .WITH_BEAD {
                     if hitView.dotColor != UIColor.red {
@@ -69,7 +69,7 @@ extension StripLightsView {
             let insidePoint = self.convert(touchePoint, to: subView)
             let hitView = subView.hitTest(insidePoint, with: event)
 
-            if let hitView = hitView as? StripLightsNode, hitView.lineColor != UIColor.red {
+            if let hitView = hitView as? StripLightsNode {
                 
                 if hitView.style == .WITH_BEAD {
                     if hitView.dotColor != UIColor.red {
@@ -127,7 +127,6 @@ class StripLightsView: UIStackView {
     
     convenience init(dataSource: String,
                      dimension: Int,
-                     singleSize: Double,
                      stripBackgroundColor: String?,
                      stripStyle: String,
                      touchingMode: String)
@@ -184,6 +183,24 @@ class StripLightsView: UIStackView {
     func setupView() {
         
         guard let dataSource = dataSource, dimension > 1 else { return }
+        
+        self.singleSize = 295 / Double(dimension)
+        
+        self.snp.remakeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(singleSize * Double(dimension))
+            // 高度需要判断
+            let n = dataSource.count / dimension
+            let m = dataSource.count % dimension
+            if m == 0 {
+                make.height.equalTo(singleSize * Double(n))
+            } else {
+                make.height.equalTo(singleSize * (Double(n) + 1))
+            }
+        }
+        
+        self.stripBackgroundColor = UIColor.white
+        
         
         self.axis = .vertical
         self.distribution = .fillEqually

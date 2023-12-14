@@ -24,10 +24,10 @@ extension UIColor {
 class ViewController: UIViewController {
     
     
-    let nodes = "[{\"color\":\"#000000\",\"backgroundColor\":\"#cccccc\"},{\"color\":\"#000000\"},{\"color\":\"#000000\"},{\"color\":\"#000000\"}]"
+    let nodes = "[{\"color\":\"#000000\",\"backgroundColor\":\"#cccccc\"},{\"color\":\"#000000\"},{\"color\":\"#000000\"},{\"color\":\"#000000\"},{\"color\":\"#000000\"},{\"color\":\"#000000\"}]"
     
     var fixCount: Int = 5
-    var stripStyle: String = "WITH_BEAD"
+    var stripStyle: String = "ONLY_LINE"//"WITH_BEAD"
     
     let stripBackgroundColor: String = "#FFFFFF"
     let touchingMode = "TOUCH" // or "CLICK"
@@ -51,26 +51,24 @@ class ViewController: UIViewController {
             return nil
         }
         
-        let singleSize = self.view.frame.size.width / Double(fixCount)
-        let mainStackView = StripLightsView(dataSource: nodes,
-                                            dimension: fixCount,
-                                            singleSize: singleSize,
-                                            stripBackgroundColor: stripBackgroundColor,
-                                            stripStyle: stripStyle,
-                                            touchingMode: touchingMode)
-        
-        view.addSubview(mainStackView)
-        mainStackView.snp.remakeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.equalTo(singleSize * Double(fixCount))
-            // 高度需要判断
-            let n = (jsonStrToDic(jsonString: nodes)?.count ?? 0) / fixCount
-            let m = (jsonStrToDic(jsonString: nodes)?.count ?? 0) % fixCount
-            if m == 0 {
-                make.height.equalTo(singleSize * Double(n))
-            } else {
-                make.height.equalTo(singleSize * (Double(n) + 1))
-            }
+        let v = UIView()
+        self.view.addSubview(v)
+        v.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
+        v.layoutIfNeeded()
+        
+        let mainStackView = StripLightsView()
+        view.addSubview(mainStackView)
+        
+        mainStackView.dataSource = jsonStrToDic(jsonString: nodes)
+        mainStackView.dimension = fixCount
+        if stripStyle == "ONLY_LINE" {
+            mainStackView.stripStyle = .ONLY_LINE
+        } else if stripStyle == "WITH_BEAD" {
+            mainStackView.stripStyle = .WITH_BEAD
+        }
+        mainStackView.touchingMode = touchingMode
+        mainStackView.setupView()
     }
 }
